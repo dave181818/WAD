@@ -1,0 +1,258 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">Dashboard</div>
+
+                <div class="panel-body pb1">
+                   <ul class="list-group" role="tablist">
+                    <li role="presentation" class="list-group-item"><a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="active">Reservations</a></li>
+                    <li role="presentation" class="list-group-item"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">New reservation</a></li>
+                    <li role="presentation" class="list-group-item"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Checkouts</a></li>
+                    <li role="presentation" class="list-group-item"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Customers</a></li>
+                  </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-body pb1">
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="home">
+                            <div class="row">
+
+                                <div class="dashboard col-md-12">
+                                    <div class="panel">
+                                        <div class="panel-heading">
+                                            Reservations   <b>{{ $array[0] }}</b>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <table class="table">
+                                                        <th><span class="glyphicon glyphicon-edit"></span>Edit</th>
+                                                        <th>Customer</th>
+                                                        <th>Contact</th>
+                                                        <th>Checkin</th>
+                                                        <th>Checkout</th>
+                                                        <th>Charge</th>
+                                                        <th>Services</th>
+                                                        <th>Staff</th>
+
+                                                        @if($array[0] == 0) 
+                                                            <center>
+                                                                <tr>
+                                                                    <td colspan="8">
+                                                                        <h2>No reservations.</h2>
+                                                                    </td>
+                                                                </tr>
+                                                            </center>
+                                                        @else 
+                                                            @foreach ($array[1] as $data)
+                                                            <tr>
+                                                                <td>
+                                                                   <form method="DELETE" action="destroy/{{ $data->id }}">
+                                                                        <input type="submit" class="btn btn-danger" value="X">
+                                                                   </form>
+                                                                </td>
+                                                                <td>{{ $data->customer }}</td>
+                                                                <td>{{ $data->contact }}</td>
+                                                                <td>{{ $data->checkin }}</td>
+                                                                <td>{{ $data->checkout }}</td>
+                                                                <td>{{ $data->charge }}</td>
+                                                                <td>
+                                                                    <p>
+                                                                        {{ $data->services }}
+                                                                    </p>
+                                                                </td>
+                                                                <td>{{ $data->staff }}</td>
+
+                                                            </tr>
+                                                            @endforeach
+                                                        @endif
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                                                        
+                                </div>
+
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="profile">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel">
+                                        <div class="panel-heading">New reservation</div>
+                                        <div class="panel-body">
+                                            <form class="form-horizontal" role="form" method="POST" action="/new-reservation">
+                                                {{ csrf_field() }}
+
+                                                <div class="form-group">
+                                                    <label for="name" class="col-md-4 control-label">Name</label>
+
+                                                    <div class="col-md-6">
+                                                        <input id="name" type="text" class="form-control" name="name" required autofocus>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="contact" class="col-md-4 control-label">Contact</label>
+
+                                                    <div class="col-md-6">
+                                                        <input id="contact" type="text" class="form-control" name="contact" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="checkin" class="col-md-4 control-label">Checkin date</label>
+
+                                                    <div class="col-md-6">
+                                                        <input id="checkin" type="date" class="form-control" name="checkin" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="checkout" class="col-md-4 control-label">Checkout date</label>
+
+                                                    <div class="col-md-6">
+                                                        <input id="checkout" type="date" class="form-control" name="checkout" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="services" class="col-md-4 control-label">Services</label>
+
+                                                    <div class="col-md-6">
+                                                        <input id="services" type="text" class="form-control" name="services" required autofocus>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="charge" class="col-md-4 control-label">Charge</label>
+
+                                                    <div class="col-md-6">
+                                                        <input id="charge" type="number" class="form-control" name="charge" required autofocus>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-6 col-md-offset-4">
+                                                        <button type="submit" class="btn btn-primary" name="staff" value="{{ Auth::user()->name }}">
+                                                            Submit
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>                                                                                       
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane" id="messages">
+                            
+                            <div class="dashboard col-md-12">
+                                <div class="panel">
+                                    <div class="panel-heading">
+                                        Checkouts
+                                    </div>
+                                    <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <table class="table">
+                                                        <th>Customer</th>
+                                                        <th>Contact</th>
+                                                        <th>Services</th>
+                                                        <th>Date out</th>
+
+                                                        @if($array[0] == 0) 
+                                                            <center>
+                                                                <tr>
+                                                                    <td colspan="7">
+                                                                        <h2>No Checkouts.</h2>
+                                                                    </td>
+                                                                </tr>
+                                                            </center>
+                                                        @else 
+                                                            @foreach ($array[2] as $data)
+                                                            <tr>
+                                                                <td>{{ $data->customer }}</td>
+                                                                <td>{{ $data->contact }}</td>
+                                                                <td>
+                                                                    <p>
+                                                                        {{ $data->services }}
+                                                                    </p>
+                                                                </td>
+                                                                <td>{{ $data->checkout }}</td>
+                                                            </tr>
+                                                            @endforeach
+                                                        @endif
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>                                                        
+                            </div>
+
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane" id="settings">
+                            
+                            <div class="dashboard col-md-12">
+                                <div class="panel">
+                                    <div class="panel-heading">
+                                        Customers
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                         <table class="table">
+                                            <th>Customer</th>
+                                            <th>Contact</th>
+                                            <th>Services</th>
+
+                                            @if($array[0] == 0) 
+                                                <center>
+                                                    <tr>
+                                                        <td colspan="7">
+                                                            <h2>No Customers.</h2>
+                                                        </td>
+                                                    </tr>
+                                                </center>
+                                            @else 
+                                                @foreach ($array[1] as $data)
+                                                <tr>
+                                                    <td>{{ $data->customer }}</td>
+                                                    <td>{{ $data->contact }}</td>
+                                                    <td>
+                                                        <p>
+                                                            {{ $data->services }}
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            @endif
+                                        </table>
+                                    </div>
+                                </div>                                                        
+                            </div>
+
+                        </div>
+
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
