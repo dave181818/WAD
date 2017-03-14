@@ -1,6 +1,6 @@
 # lvcc-web-app-devt-laravel
 
-Resort Accommodation
+<br>Resort Accommodation</br>
 ACT 2
 Name                        Contribution
 Ysrael Carlos Briones
